@@ -1,6 +1,6 @@
 # Goal to Game
 
-Build beautiful games with high-quality 3D assets using [Thrixel](https://thrixel.com/) and [Claude Code](https://claude.com/claude-code).
+Build better Gauntlet Loop games with high-quality 3D assets from [Thrixel](https://thrixel.com/) and and [Claude Code](https://claude.com/claude-code).
 
 Claude Code handles the game logic and scene setup. Thrixel generates, organizes, and manages the 3D assets. Thrixel processes 3D creation in parallel so you can build your scene faster.
 
