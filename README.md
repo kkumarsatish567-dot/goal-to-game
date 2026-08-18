@@ -6,9 +6,15 @@ Claude Code handles the game logic and scene setup. Thrixel generates, organizes
 
 Goal to Game currently supports **Unity** and **Three.js**. This page covers **Claude Code**, where every step below is tested.
 
+## Gauntlet Loop for game creation + vibe gaming
+
+Goal to Game uses a Gauntlet-style iterative workflow for AI game development. The agent continuously builds, evaluates, and improves both gameplay and 3D assets, with Thrixel’s API generating and refining assets inside the loop. Thrixel generates 3D assets faster and at higher quality than Claude Code, while using fewer tokens. With Goal to Game, you can vibe out a game from a single prompt, then keep refining it with follow-up prompts.
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/ThatCharlieK/READMEAssets/main/Thrixel-1prompt-to-game-readme.gif" width="600"/>
 </p>
+
+
 
 ## Quick start
 
