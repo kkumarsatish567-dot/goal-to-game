@@ -22,10 +22,10 @@ Build World uses a Gauntlet-style iterative workflow for creating interactive 3D
 
 Steps 1 and 2 are once per machine. After that, a new game is just step 3.
 
-> Using [Codex](https://thrixel.com/docs/goal-to-game#codex) or
-> [Gemini CLI](https://thrixel.com/docs/goal-to-game#gemini-cli) instead? Each one
+> Using [Codex](https://thrixel.com/docs/build-world#codex) or
+> [Gemini CLI](https://thrixel.com/docs/build-world#gemini-cli) instead? Each one
 > installs Thrixel its own way - the
-> [installation page](https://thrixel.com/docs/goal-to-game) has the steps for both.
+> [installation page](https://thrixel.com/docs/build-world) has the steps for both.
 
 ### 1. Install Claude Code and uv
 
@@ -65,7 +65,7 @@ Same on every platform:
 uvx thrixel-mcp@latest login
 
 # 2. One plugin carries both the skill and the Thrixel connector, for every project.
-claude plugin marketplace add thrixel/goal-to-game
+claude plugin marketplace add thrixel/build-world
 claude plugin install thrixel@thrixel
 ```
 
@@ -97,7 +97,7 @@ The plugin includes both pieces, so your old install is now a duplicate. Remove 
 
 ```bash
 claude mcp remove thrixel
-rm -rf ~/.claude/skills/goal-to-game ~/.claude/skills/thrixel
+rm -rf ~/.claude/skills/build-world ~/.claude/skills/goal-to-game ~/.claude/skills/thrixel
 ```
 
 </details>
@@ -107,7 +107,7 @@ rm -rf ~/.claude/skills/goal-to-game ~/.claude/skills/thrixel
 
 ```powershell
 claude mcp remove thrixel
-Remove-Item -Recurse -Force "$HOME\.claude\skills\goal-to-game","$HOME\.claude\skills\thrixel"
+Remove-Item -Recurse -Force "$HOME\.claude\skills\build-world","$HOME\.claude\skills\goal-to-game","$HOME\.claude\skills\thrixel"
 ```
 
 </details>
@@ -121,15 +121,15 @@ Remove-Item -Recurse -Force "$HOME\.claude\skills\goal-to-game","$HOME\.claude\s
 claude --permission-mode auto
 ```
 
-**Into Claude Code** (not the terminal), start the line with **`/thrixel:goal-to-game`**, then
+**Into Claude Code** (not the terminal), start the line with **`/thrixel:build-world`**, then
 describe the game and name the engine (three.js or Unity):
 
 ```text
-/thrixel:goal-to-game build a submarine exploration game in three.js set in a bright, vibrant tropical sea with coral and fish
+/thrixel:build-world build a submarine exploration game in three.js set in a bright, vibrant tropical sea with coral and fish
 ```
 
 > [!TIP]
-> Type `/thr` and Claude completes **`/thrixel:goal-to-game`** for you, so you never type it in
+> Type `/thr` and Claude completes **`/thrixel:build-world`** for you, so you never type it in
 > full. If the completion does not appear, the skill is not installed - go back to step 2.
 
 > We recommend setting /model to Opus 5 or a more capable model, with effort set to high or above.
@@ -140,7 +140,7 @@ change things.
 <details>
 <summary><b>No plugin? Install the <a href="https://code.claude.com/docs/en/skills">skill</a> and the <a href="https://modelcontextprotocol.io">MCP connector</a> separately</b></summary>
 
-Replaces steps 2 and 3 above. Same start command either way: `/thrixel:goal-to-game`.
+Replaces steps 2 and 3 above. Same start command either way: `/thrixel:build-world`.
 
 **2. Connect Thrixel**
 
@@ -155,7 +155,7 @@ uvx thrixel-mcp@latest login
 claude mcp add --scope user thrixel -- uvx thrixel-mcp@latest
 
 # 3. Install the skill. Clone, not download, so it can update itself later.
-git clone https://github.com/thrixel/goal-to-game ~/.claude/skills/thrixel
+git clone https://github.com/thrixel/build-world ~/.claude/skills/thrixel
 ```
 
 </details>
@@ -171,7 +171,7 @@ uvx thrixel-mcp@latest login
 
 claude mcp add --scope user thrixel -- uvx thrixel-mcp@latest
 
-git clone https://github.com/thrixel/goal-to-game "$HOME\.claude\skills\thrixel"
+git clone https://github.com/thrixel/build-world "$HOME\.claude\skills\thrixel"
 ```
 
 </details>
@@ -190,7 +190,7 @@ If either is missing, Claude will build the game without Thrixel and never menti
 Identical to step 3 above, same command and all:
 
 ```text
-/thrixel:goal-to-game build a submarine exploration game in three.js set in a bright, vibrant tropical sea with coral and fish
+/thrixel:build-world build a submarine exploration game in three.js set in a bright, vibrant tropical sea with coral and fish
 ```
 
 </details>

@@ -1,5 +1,5 @@
 ---
-name: goal-to-game
+name: build-world
 description: Generates polished, fully playable 3D game prototypes in Unity or three.js, with high quality (.glb) meshes generated through the Thrixel API. Use when the user wants to make a game, build a playable prototype, or generate 3D assets.
 ---
 
@@ -23,7 +23,7 @@ For a plugin install, check staleness without touching git. If one segment of th
 tip of `main`:
 
 ```sh
-curl -s --max-time 5 https://api.github.com/repos/thrixel/goal-to-game/commits/main
+curl -sL --max-time 5 https://api.github.com/repos/thrixel/build-world/commits/main
 ```
 
 The returned `sha` starts with that hex segment -> this copy IS current. Continue, and do not
@@ -42,7 +42,8 @@ the USER'S OWN repository. Never skip it.
 git -C <the directory this file is in> rev-parse --show-prefix
 ```
 
-- Output is exactly `skills/goal-to-game/` -> this is its own clone, safe, go to step 3.
+- Output is exactly `skills/build-world/` (or `skills/goal-to-game/` in an older clone) -> this
+  is its own clone, safe, go to step 3.
 - Any other path -> git walked up into the user's project. **Stop. Do not pull anything.**
   Continue with the copy you have.
 - `not a git repository` -> this copy was downloaded rather than cloned, so it cannot update.
@@ -646,3 +647,63 @@ UVs, which are stored per-corner, so each island keeps its own coordinates.
 
 Better still, do not decimate by hand at all - `thrixel_reduce_triangles` is free and already
 correct.
+
+# Publishing to thrixel.world - local first, ship when it's done
+
+Every game can go live on the public internet at `<slug>.thrixel.world` - a real URL the
+user can text to a friend, who plays it in a browser with nothing to install. Publishing is
+free and does not consume cubes. But WHEN you publish matters as much as how:
+
+**While building and iterating: localhost only.** Never publish as a way to demo work in
+progress. The dev server reloads in milliseconds; a publish is a build plus an upload, and a
+half-finished game on a public URL is not a good look for the user. Do not bring publishing
+up while there is still visible work on the table.
+
+**When the game reaches a natural finish line, offer it once.** Signals: the user says some
+version of "it's done", "I love it", "how do I show this to someone" - or asks for a
+recording, a share link, or "what now". Then offer exactly this, once:
+
+> Want me to publish it to thrixel.world? You'll get a public link anyone can play in a
+> browser. It's free, and republishing later keeps the same link.
+
+If they decline, do not ask again this session. If they ask what publishing means first,
+lead with the two facts that matter: the game becomes publicly playable at a random
+`name.thrixel.world` address, and they can unpublish or update it at any time.
+
+## How to publish
+
+Use `thrixel_publish_game` if your Thrixel MCP server has it. **If the tool is not in your
+tool list, publishing has not reached your server version yet: say the feature is rolling
+out and offer the localhost URL instead. Do not attempt the REST API by hand.**
+
+The tool wants a directory of static files with `index.html` at its root. What you have is
+usually a Vite project, so assemble the shippable form first:
+
+1. **Build.** `npx vite build` -> `dist/`. Source form does not work on a static host: the
+   dev server resolves `import 'three'`; nothing on a CDN will.
+2. **Runtime assets.** Anything the game fetches at runtime (`/assets/*.glb`,
+   `manifest.json`, audio) is NOT bundled by Vite unless it sits in `public/`. Copy those
+   directories into the bundle next to `dist/index.html`, preserving their paths.
+3. **Cover.** Put a representative screenshot at the bundle root as `cover.png` - it becomes
+   the game's card in the public thrixel.world directory. You already have shots from the
+   capture harness; pick the best one. A game without a cover gets a plain placeholder.
+4. **Sanity-check locally** before uploading: serve the assembled bundle with any static
+   file server and confirm the game loads from THOSE files - this catches a missing asset
+   directory in seconds. Then publish the bundle directory.
+
+Server-side facts worth knowing: only static web files ship (html, js, css, wasm, glb,
+images, audio, fonts); stray tool scripts, lockfiles, `node_modules/` and dotfiles are
+silently skipped, never fatal. A game with a server component (multiplayer relay, LLM
+proxy) publishes fine but that feature will be dead - tell the user which part stays
+local-only before publishing, and make sure the game degrades gracefully without it.
+
+## After the first publish
+
+- **Updates:** republish with the same `game_id` - the link never changes, and the old
+  version keeps serving until the new one is fully deployed. Offer this when the user makes
+  further changes to a published game.
+- **Unpublish** takes the game offline immediately; the address stays theirs and
+  republishing revives it.
+- The game appears in the public directory at thrixel.world; `listed=false` keeps the link
+  working but takes it out of the directory - offer that if the user wants "link only for
+  friends".
