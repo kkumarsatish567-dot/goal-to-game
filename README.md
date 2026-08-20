@@ -1,14 +1,16 @@
-# Goal to Game
+# Build World
 
-Build better Gauntlet Loop games with high-quality 3D assets from [Thrixel](https://thrixel.com/) and your AI agent of choice.
+Build interactive 3D worlds with high-quality assets from [Thrixel](https://thrixel.com/) and your AI agent of choice.
 
-Claude Code (or your preferred agent) handles the game logic and scene setup. Thrixel generates, organizes, and manages the 3D assets. Save your coding agent tokens and time by using Thrixel to generate 3D assets faster and at higher quality than Claude Code.
+Claude Code (or your preferred agent) handles the logic, interactions, and scene setup. Thrixel generates, organizes, and manages the 3D assets. Save your coding agent tokens and time by using Thrixel to generate 3D assets faster and at higher quality than Claude Code.
 
-Goal to Game currently supports **Unity** and **Three.js**. This page covers **Claude Code**, but the workflow works with other coding agents as well.
+Build World currently supports **Unity** and **Three.js**. This page covers **Claude Code**, but the workflow works with other coding agents as well.
+
+> Build World was previously called Goal to Game. The name changed because the skill goes beyond games: it can build interactive experiences, simulations, educational experiences, virtual tourism and historical recreations, AR/VR experiences, and more.
 
 ## Thrixel inside the Gauntlet Loop
 
-Goal to Game uses a Gauntlet-style iterative workflow for AI game development. The agent continuously builds, evaluates, and improves both gameplay and 3D assets, with Thrixel generating and refining assets inside the loop. With Goal to Game, you can vibe out a game from a single prompt, then keep refining it with follow-up prompts.
+Build World uses a Gauntlet-style iterative workflow for creating interactive 3D worlds. The agent calls Thrixel to generate and refine 3D assets inside the loop. The agent continuously builds, evaluates, and improves the world itself, including its gameplay, interactions, and assets. With Build World, you can vibe out a game or other interactive 3D experience from a single prompt, then keep refining it with follow-up prompts.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/ThatCharlieK/READMEAssets/main/Thrixel-1prompt-to-game-readme.gif" width="600"/>
