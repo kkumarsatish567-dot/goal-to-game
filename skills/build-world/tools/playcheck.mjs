@@ -35,8 +35,10 @@
  */
 
 import { createServer } from 'node:http';
-import { readFile, stat } from 'node:fs/promises';
+import { mkdir, readFile, stat } from 'node:fs/promises';
 import { extname, join, resolve, sep } from 'node:path';
+import { homedir } from 'node:os';
+import { spawn } from 'node:child_process';
 
 const TYPES = {
   '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript',
@@ -59,23 +61,57 @@ if (!target) {
   process.exit(2);
 }
 
-/** Playwright lives in the three.js kit; a hand-assembled bundle may have none. */
-async function loadChromium() {
-  const tries = ['playwright', 'playwright-core'];
-  for (const mod of tries) {
-    try {
-      return (await import(mod)).chromium;
-    } catch { /* keep looking */ }
-  }
-  // The kit ships it - reach into that install rather than making the caller
-  // download a second copy of Chromium.
+/**
+ * Find a browser, and if there is not one, GET one.
+ *
+ * The self-install is the whole point. An earlier version of this script just
+ * exited with "no browser, install one yourself" - and in a real run the agent
+ * dutifully ran the check, read that message, published anyway, and told the
+ * user the game worked perfectly. A gate with an easy way past it is not a
+ * gate; it is a suggestion. So the missing-browser case is fixed rather than
+ * reported. It costs one ~130 MB download, once per machine, and it is the
+ * difference between a check that runs and a check that gets stepped around.
+ */
+async function loadChromium({ allowInstall = true } = {}) {
   const here = new URL('.', import.meta.url).pathname;
-  for (const rel of ['../engines/threejs/node_modules/playwright/index.mjs',
-                     '../engines/threejs/node_modules/playwright/index.js']) {
+  const cacheRoot = join(homedir(), '.cache', 'thrixel-playcheck');
+  const candidates = [
+    'playwright', 'playwright-core',
+    // The three.js kit installs its own; borrow it rather than duplicating.
+    resolve(here, '../engines/threejs/node_modules/playwright/index.mjs'),
+    resolve(here, '../engines/threejs/node_modules/playwright/index.js'),
+    join(cacheRoot, 'node_modules', 'playwright', 'index.mjs'),
+    join(cacheRoot, 'node_modules', 'playwright', 'index.js'),
+  ];
+  for (const mod of candidates) {
     try {
-      return (await import(resolve(here, rel))).chromium;
+      const { chromium } = await import(mod);
+      if (chromium) return chromium;
     } catch { /* keep looking */ }
   }
+  if (!allowInstall) return null;
+
+  console.error('playcheck: no headless browser found. Installing one now (~130 MB, once');
+  console.error(`playcheck: per machine, into ${cacheRoot}). This is not optional -`);
+  console.error('playcheck: a bundle nobody has opened is a bundle nobody has checked.');
+  try {
+    await mkdir(cacheRoot, { recursive: true });
+    const run = (cmd, cmdArgs) => new Promise((ok) => {
+      const p = spawn(cmd, cmdArgs, { cwd: cacheRoot, stdio: 'inherit', shell: false });
+      p.on('close', (code) => ok(code));
+      p.on('error', () => ok(-1));
+    });
+    if (await run('npm', ['install', '--no-audit', '--no-fund', '--loglevel', 'error', 'playwright']) !== 0) return null;
+    // The npm package does not bring the browser binary with it.
+    if (await run('npx', ['--yes', 'playwright', 'install', 'chromium']) !== 0) return null;
+    for (const mod of [join(cacheRoot, 'node_modules', 'playwright', 'index.mjs'),
+                       join(cacheRoot, 'node_modules', 'playwright', 'index.js')]) {
+      try {
+        const { chromium } = await import(mod);
+        if (chromium) return chromium;
+      } catch { /* fall through */ }
+    }
+  } catch { /* fall through to the null return */ }
   return null;
 }
 
@@ -102,11 +138,15 @@ function serve(root, port) {
   return new Promise((ok) => server.listen(port, '127.0.0.1', () => ok(server)));
 }
 
-const chromium = await loadChromium();
+const chromium = await loadChromium({ allowInstall: flag('no-install') !== true });
 if (!chromium) {
-  console.error('playcheck: no browser available, so the bundle was NOT checked.');
-  console.error('  Install one:  npm i -D playwright && npx playwright install chromium');
-  console.error('  Do not report the game as verified. Say it is unverified, or open it yourself.');
+  console.error('');
+  console.error('playcheck: COULD NOT CHECK - no browser, and installing one failed.');
+  console.error('  The bundle has NOT been verified. It may be completely broken.');
+  console.error('  Either fix the install (npm i playwright && npx playwright install chromium)');
+  console.error('  or open the bundle yourself with a static server and look at it.');
+  console.error('  Do NOT tell anyone the game works. "Published but unverified" is the');
+  console.error('  only honest thing to say after this exit code.');
   process.exit(2);
 }
 
