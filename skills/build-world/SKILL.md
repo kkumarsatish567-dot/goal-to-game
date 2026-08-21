@@ -171,6 +171,13 @@ equivalent notes are in [engines/unity.md](engines/unity.md) under Publishing.
 game done, and look at the screenshot it writes - a HUD designed on a big monitor
 fails in ways no assertion catches.
 
+**And never report a property you did not measure.** "Works perfectly on desktop
+and mobile, 60 FPS" is a claim, and a game that throws a ReferenceError on its
+first frame produces exactly the same terminal output as one that works. Run
+`tools/playcheck.mjs` (see Publishing) and say what it returned. If you could not
+run it, say the game is unverified - that is a useful sentence, and a confident
+wrong one is not.
+
 Pay special attention to mesh quality, realism, character quality, to ensure it looks AAA.
 Work alone, do NOT launch subagents to do work - subagents will interfere with each other and make
 everything more difficult. However, frequently launch subagents as harsh critic agents to inspect
@@ -827,16 +834,43 @@ you are the only one who has read them. Four things, quickly:
    intentions: the platform must not host it. If a folder is that, say plainly you
    cannot publish it, and do not offer a workaround.
 
-Then two facts about the game itself, which are not problems but must be said out
-loud before the link exists:
+And one fact that is not a problem but must be said out loud before the link
+exists: **a server component will be dead.** A multiplayer relay, an LLM proxy, a
+score backend - only static files ship. Say which feature stops working, and make
+sure the game degrades gracefully rather than hanging on a failed fetch.
 
-- **A server component will be dead.** A multiplayer relay, an LLM proxy, a score
-  backend - only static files ship. Say which feature stops working, and make sure
-  the game degrades gracefully rather than hanging on a failed fetch.
-- **Phones.** Run `node tools/mobilecheck.mjs` if this is a three.js kit game. If
-  it is not, at least open the bundle at a phone-sized viewport and try it with a
-  mouse-as-thumb. Most people who receive the link will be on a phone; publishing a
-  keyboard-only game means most of them see a scene they cannot play.
+## Prove it runs - the last gate before a human gets the link
+
+**Run this on the assembled bundle, every publish, no exceptions:**
+
+```
+node <skill>/tools/playcheck.mjs <the bundle directory>
+```
+
+It opens the bundle in a real browser at a desktop viewport and again on a phone,
+and checks that it loads with no errors, draws something, and **responds to
+input** - keys on desktop, a real touch drag on the phone. Exit 0 publish, exit 1
+do not.
+
+**Do not skip this because the build succeeded.** A build succeeding means the
+code bundled, not that it runs. The case this exists for: a game shipped with
+`window.loadOrbModel = loadOrbModel` left behind after the function it named had
+been refactored away. Vite does not care - a ReferenceError happens at runtime -
+so the build passed, the publish succeeded, and the summary said "fully playable,
+60 FPS". The page was black on the first frame. Nobody had opened it.
+
+Note which check caught that: the page still *drew* something, because the HUD
+overlay rendered fine. It was **responds to input** that failed, at 0% of the
+frame changing. So a screenshot is not proof either - only input is.
+
+If it exits **2**, there is no browser installed and the bundle was NOT checked.
+Either install one (`npm i -D playwright && npx playwright install chromium`) or
+open the bundle yourself with a static server and look. Never describe a game as
+working on the strength of a check that did not run - say plainly that it is
+unverified and let the user decide.
+
+For a three.js kit game, `tools/mobilecheck.mjs` goes deeper on the phone side
+(it drives the kit's own input layer and reports the frame rate); run both.
 
 ## Publish
 
