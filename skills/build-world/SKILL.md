@@ -475,16 +475,44 @@ count and realism you can always change; a merged mesh can never be un-merged.
 | Need | Path | Why |
 |---|---|---|
 | **Moving parts, lower poly, more stylized look** | Architect | Named part hierarchy, cheapest option |
-| **Moving parts AND high poly, high quality, or organic/complex details** | Architect -> Detailer | The detailer keeps the hierarchy at `adherence_level: 9` |
+| **Moving parts AND high poly, high quality, or organic/complex details** | Architect -> Detailer | The detailer mostly keeps the hierarchy, but see the caveat below: thin parts can still be lost |
+| **Moving parts, and the shape is already right** | Architect -> Texture | Geometry is untouched, so every part and name survives exactly. Same price as the detailer |
 | **Static, organic** (creature, character, plant, rock, food) | Sculptor | Best organic shapes, and cheaper than Architect -> Detailer |
 | **Static, man-made, high poly, high quality, or organic and/or complex** | Sculptor | Nothing moves, so the part hierarchy buys you nothing and costs ~1.5x |
 | **Static, stylized / low-poly, instanced a lot** (trees, rocks, crates) | Architect | Keeps triangle counts sane when placed hundreds of times |
 
-**The hierarchy survives the detail pass only at full adherence.** `adherence_level: 9` is the
-default and keeps `preserve_parts` on. **Below 9 the server merges the parts by default**,
-because holding a part split together while the silhouette is being reshaped is what produced
-the remesh artifacts. So if you chose Architect *for the parts*, do not lower adherence. If you
-truly need both, pass `preserve_parts: true` explicitly and inspect the result.
+**`adherence_level` runs 0 to 12, and 9 is the DEFAULT, not the maximum.** 9 keeps
+`preserve_parts` on. **Below 9 the server merges the parts by default**, because holding a part
+split together while the silhouette is being reshaped is what produced the remesh artifacts. So
+if you chose Architect *for the parts*, do not lower adherence. If you truly need both, pass
+`preserve_parts: true` explicitly and inspect the result.
+
+**`preserve_parts: true` is best effort, not a guarantee, and thin parts are what it loses.**
+The survivors are the thick parts. A propeller blade is thin, and thinness is what predicts
+destruction, so the parts most likely to be destroyed are exactly the moving parts you chose
+Architect to get.
+
+**If parts must survive, set `adherence_level: 12`.** The default 9 is not enough. Measured on
+one 78-part quadcopter blockout, same seed and same reference image, only adherence changed:
+
+| | `adherence_level: 9` (default) | `adherence_level: 12` |
+|---|---|---|
+| parts returned | 28 of 78 | **35 of 78** |
+| propellers | one gone, two returned as slivers | **all four, at full size** |
+
+12 still drops very small decorative sub-parts (cooling slots, indicator rings), so it improves
+the odds rather than guaranteeing anything.
+
+**So: if the blockout's shape is already what you want, do not run the detailer at all.** Use
+`thrixel_retexture_model` instead. It costs the same, gives the asset a finished look, and never
+touches geometry, so every part and name survives exactly. The detailer is for when you want the
+*shape itself* to gain detail. Always `thrixel_inspect_model` a detailer result and confirm the
+parts you need are still there.
+
+**Proportions matter too.** An asset whose bounding box is far from a cube - a building, a roof,
+a floor plane, anything long and thin - comes back noticeably worse from both the Detailer and
+the Sculptor, because the object fills only a small part of the working volume. For buildings,
+texture rather than detail.
 
 **What the paths cost relative to each other** (absolute numbers from `thrixel_pricing`):
 
@@ -640,9 +668,12 @@ their answer.
 5. **Detail pass (optional, animated assets only)** with `thrixel_detail_model` - one flat
    operation. Turns a blockout into high-resolution geometry with a PBR texture. Only worth it when the asset needs
    its part hierarchy *and* fidelity; for anything static, generate it with the Sculptor instead.
-   Pass a `prompt` describing the finished look and leave `adherence_level` at 9 so your
-   blockout's proportions survive. `texture_size` is 2048 or 4096; `decimation_target` around
-   20000 is a good game target.
+   Pass a `prompt` describing the finished look, and set `adherence_level: 12` so your named
+   parts survive - the default of 9 loses thin ones. `texture_size` is 2048 or 4096;
+   `decimation_target` around 20000 is a good game target. **Skip this step entirely if the
+   blockout's shape is already right** - go straight to step 6, which costs the same and cannot
+   damage the geometry. After any detail pass, `thrixel_inspect_model` the result and confirm
+   your moving parts are still in the list; thin ones do get lost.
 
 6. **Texture pass (optional)** with `thrixel_retexture_model` - one flat operation, new
    materials, geometry untouched. This is the cheap way to restyle a whole set: pass the same `reference_image_id` to
