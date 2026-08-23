@@ -818,11 +818,11 @@ shippable form first:
    those directories into the bundle next to `dist/index.html`, preserving their
    paths.
 3. **Cover.** Put a representative screenshot at the bundle root as `cover.png` - it
-   becomes the game's card in the public thrixel.world directory. If you built the
-   game, you already have shots from the capture harness; pick the best one. If the
-   folder came from the user, take one - open the game and screenshot it, or ask
-   them for a picture they like. A game without a cover gets a plain placeholder,
-   which is the difference between a card someone clicks and one they scroll past.
+   becomes the game's card art. If you built the game, you already have shots from
+   the capture harness; pick the best one. If the folder came from the user, take
+   one - open the game and screenshot it, or ask them for a picture they like. A
+   game without a cover gets a plain placeholder, which is the difference between a
+   card someone clicks and one they scroll past.
 4. **Serve the assembled bundle locally** and confirm the game loads from THOSE
    files. Any static file server will do. This catches a missing asset directory in
    seconds, and it is the difference between publishing a game and publishing a
@@ -925,9 +925,9 @@ theirs permanently.
   takes a live game down. Offer this when the user makes further changes to a published game.
 - **Unpublish** takes the game offline immediately; the address stays theirs and
   republishing revives it.
-- The game appears in the public directory at thrixel.world; `listed=false` keeps the link
-  working but takes it out of the directory - offer that if the user wants "link only for
-  friends".
+- **Sharing is by link.** The game's address is public and anyone who has it can play.
+  `listed=false` keeps the link working while marking the game unlisted - offer it if
+  the user wants "just for friends".
 
 # Managing published games
 
@@ -935,9 +935,9 @@ The user does not have to be building anything to ask about what they have alrea
 published. Answer these directly, without touching the rest of this file.
 
 **If these tools are not in your tool list**, publishing has not reached your Thrixel
-MCP server version yet. Say so in one line, point them at https://thrixel.world where
-their games are listed, and stop. Do not call the REST API by hand and do not guess at
-what they have published.
+MCP server version yet. Say so in one line, tell them upgrading the server brings it,
+and stop. Do not call the REST API by hand and do not guess at what they have
+published - the user's own record of their links is better than a guess.
 
 | they ask | do this |
 |---|---|
