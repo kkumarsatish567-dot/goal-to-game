@@ -220,7 +220,32 @@ eventually are not.
 **On a paid plan (Pro / Studio): ask nothing.** Go straight to the engine. Interrupting a
 paying user to talk about plans is pure friction.
 
-**On the free plan: before the first asset-generation step, proactively recommend upgrading.**
+<!-- first-month-free promo: remove this paragraph block when the campaign ends.
+     Source of truth for the behaviour is thrixel_mcp/offers.py. -->
+**If `thrixel_account_status` says a free month is waiting, or already available: ask nothing
+either.** Go straight to the engine and build.
+
+Read what the tool says rather than the balance. A first-time account starts at the full signup
+grant, far above the line the offer is keyed to, so at the START of a build it is never
+"eligible" yet - it is an account that WILL be, once it has spent what it has. The tool
+distinguishes the two and says which one you are looking at. A check for eligibility alone would
+stop every first-time user to ask for money on the exact path where waiting pays.
+
+An account with thirty free days ahead of it is not short of capacity, it is one link away from
+having plenty, and stopping the build to explain that trades a finished game for a sales pitch.
+The reason to raise money up front is that a free plan runs out and strands the user mid-build.
+That reason does not hold here: running the balance down is what makes the offer land, and the
+answer arrives with the game rather than instead of it.
+
+When the offer does become available, `thrixel_publish_game` reports it with the finished game.
+Say it ONCE, there, in the message that hands the game over.
+
+Relay what the tool gives you rather than writing your own version of it, and say the whole
+thing - a trial described as simply free, with no mention of what it costs afterwards or that
+it takes a card, is the kind of surprise that ends in a chargeback.
+
+**On the free plan with no such offer: before the first asset-generation step, proactively
+recommend upgrading.**
 The free plan does not provide enough capacity to generate and iterate on the assets typically
 needed for a complete game, so do not skip or postpone this recommendation.
 
@@ -256,6 +281,9 @@ a bigger cap means fewer waves rather than just a longer asset list. Take both c
 `thrixel_pricing` if you want to name them, never from memory.
 
 If they choose upgrade, call **`thrixel_upgrade_plan`** and give them the link it returns.
+On an account that has never subscribed that link may come back as a free first month;
+the tool says so when it does. Pass on what it tells you in full, including the price
+after the trial and that starting it takes a card.
 
 ```
 thrixel_upgrade_plan(tier="pro")
@@ -350,7 +378,8 @@ Use their actual asset names, not those. Never phrase it as "upgrade to Pro" ver
 you have": the first is a product tier and the second is a shrug, and neither tells them what
 they are actually choosing between.
 
-If they upgrade: `thrixel_upgrade_plan(tier="pro")` and give them the link.
+If they upgrade: `thrixel_upgrade_plan(tier="pro")` and give them the link. It may come back
+as a free first month rather than a full-price checkout; relay whatever the tool says, whole.
 
 **On a paid plan**, the two options are different, because they can already do both:
 
@@ -917,6 +946,15 @@ It zips the directory, uploads it, waits for the deploy and returns the live URL
 Give the user the URL as the first line of your reply - it is the thing they asked
 for. A random address like `zesty-panda-14743.thrixel.world` is normal and is
 theirs permanently.
+
+<!-- first-month-free promo: remove this paragraph when the campaign ends. -->
+**If the tool's reply carries an offer, pass it on in that same message, once, after the
+link and after whatever is still unbuilt.** Order matters: the game first, the gaps second,
+the offer last. It reads as a reward for what they just made rather than a toll on it, and
+a user who has just watched their game come together is the one person best placed to judge
+whether more of it is worth paying for. Use the wording the tool gives you, whole - the
+price after the trial and the card requirement included - and do not raise it again later
+in the session.
 
 ## After the first publish
 
