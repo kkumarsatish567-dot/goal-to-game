@@ -956,6 +956,14 @@ whether more of it is worth paying for. Use the wording the tool gives you, whol
 price after the trial and the card requirement included - and do not raise it again later
 in the session.
 
+**If they say yes, call `thrixel_upgrade_plan(tier="pro")` and give them the link it
+returns.** That link goes straight to the payment page, which the one in the offer message
+deliberately does not: an unrequested payment link records that the account reached checkout,
+and at the end of a build nobody has asked for anything yet. Once they have asked, they have.
+
+Do not go looking for a link yourself and do not reuse the pricing-page one for this - the
+tool returns the free-month checkout, and only for an account that qualifies.
+
 ## After the first publish
 
 - **Updates:** republish with the same `game_id` - the link never changes, and the old
