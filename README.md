@@ -4,7 +4,7 @@ Build beautiful games with high-quality 3D assets using [Thrixel](https://thrixe
 
 Claude Code handles the game logic and scene setup. Thrixel generates, organizes, and manages the 3D assets. Thrixel processes 3D creation in parallel so you can build your scene faster.
 
-Goal to Game currently supports **Unity** and **Three.js** and was tested with **Claude Code**. Other coding agents that can read repository instructions and run commands inside a project, such as Codex, are expected to work as well, but the instructions below use Claude Code.
+Goal to Game currently supports **Unity**, **Three.js**, and **Roblox Studio** and was tested with **Claude Code**. Other coding agents that can read repository instructions and run commands inside a project, such as Codex, are expected to work as well, but the instructions below use Claude Code.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/ThatCharlieK/READMEAssets/main/Thrixel-1prompt-to-game-readme.gif" width="600"/>
@@ -93,16 +93,25 @@ git clone https://github.com/thrixel/goal-to-game "$HOME\.claude\skills\goal-to-
 claude --permission-mode auto
 ```
 
-Then type this **into Claude Code** (not the terminal) and specify the engine (three.js or Unity):
+Then type this **into Claude Code** (not the terminal) and specify the engine (three.js, Unity, or Roblox Studio):
 
 ```text
 /goal build a submarine exploration game in three.js set in a bright, vibrant tropical sea with coral and fish
+```
+
+Roblox example:
+
+```text
+/goal build a lighthouse-keeper game in Roblox where a storm rolls in each night
 ```
 
 > We recommend setting /model to Opus 5 or a more capable model, with effort set to high or above.
 
 Claude checks your Thrixel account and starts building. Keep talking to it in plain English to
 change things.
+
+For Roblox projects, the engine-specific import, Rojo, collision, material, and verification rules
+live in [`engines/roblox.md`](engines/roblox.md).
 
 <details>
 <summary>Something went wrong</summary>
@@ -128,7 +137,7 @@ Every asset generated through the Thrixel API is saved to your Thrixel workspace
 
 **Manage and Edit**: Visit [Thrixel Web App](https://thrixel.com/create) to view, manage, and edit your assets. If you make changes in the web app, ask your coding agent to pull the updated versions back into your game.
 
-**Engine Agnostic**: Because your assets are managed in Thrixel rather than tied to one codebase, you can also reuse them across projects and engines. For example, you can prototype in Three.js and later ask your agent to rebuild the game in Unity using the same asset library.
+**Engine Agnostic**: Because your assets are managed in Thrixel rather than tied to one codebase, you can also reuse them across projects and engines. For example, you can prototype in Three.js and later ask your agent to rebuild the game in Unity or Roblox using the same asset library.
 
 **Parallel Processing**: Thrixel can manage and process jobs in parallel. Your coding agent can farm out parallel jobs to Thrixel while building out the logic of the game. Each [plan](https://thrixel.com/create/#upgrade) has a different concurrency limit.
 
