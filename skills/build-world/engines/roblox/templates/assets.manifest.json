@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "engine": "roblox",
+  "assets": [
+    {
+      "name": "example-hero-prop",
+      "submissionId": "replace-me",
+      "source": "assets/source/example-hero-prop.glb",
+      "sha256": "replace-after-download",
+      "targetHeightStuds": 12,
+      "rotationDegrees": [0, 0, 0],
+      "movingGroups": [],
+      "appearanceGroups": [],
+      "collision": "simple-parts",
+      "robloxModelAssetId": null,
+      "resolvedMeshParts": [],
+      "state": "prepared",
+      "notes": "Replace this entry with real inspected asset metadata."
+    }
+  ]
+}
