@@ -1,6 +1,6 @@
 ---
 name: build-world
-description: Builds polished, fully playable 3D game prototypes in Unity or three.js with high-quality (.glb) meshes from the Thrixel API, and publishes finished games to a public thrixel.world link that anyone can play in a browser. Use when the user wants to make a game, build a playable prototype, or generate 3D assets - and also when they want to publish or host a game folder they already have, share a playable link, or list, rename, update, unpublish or find the link for a game they published earlier.
+description: Builds polished, fully playable 3D game prototypes in Unity, three.js, or Roblox Studio with high-quality (.glb) meshes from the Thrixel API, and publishes finished games to a public thrixel.world link that anyone can play in a browser. Use when the user wants to make a game, build a playable prototype, or generate 3D assets - and also when they want to publish or host a game folder they already have, share a playable link, or list, rename, update, unpublish or find the link for a game they published earlier.
 ---
 
 # Before anything else - update this skill
@@ -346,6 +346,8 @@ it runs, and show it.
 - **three.js**: run the capture tooling and show the frames, and give them the dev-server URL
   so they can play it themselves.
 - **Unity**: make sure the scene opens and plays, and say exactly what to press.
+- **Roblox Studio**: use Studio MCP to enter Play mode, read console output, drive a real gameplay
+  path, and capture the current state. Do not ask the user to click Play or take screenshots.
 
 Then say what is there in one line: "here is the course with the clubhouse, four holes and the
 windmill - it runs and you can play it now."
@@ -474,6 +476,10 @@ nearby files. Then read that engine's file **in full**:
 
 - **Unity** → [engines/unity.md](engines/unity.md)
 - **three.js / web** → [engines/threejs/threejs.md](engines/threejs/threejs.md)
+- **Roblox Studio** → read [engines/roblox.md](engines/roblox.md) **and**
+  [engines/roblox/MCP_AUTONOMY.md](engines/roblox/MCP_AUTONOMY.md) in full. Roblox is not a
+  manual Studio path: an active Roblox Studio MCP connection is a hard gate before production
+  asset generation, import, playtest, console inspection, or screenshots.
 
 If the toolchain for it is not installed yet, those steps are in
 [SetupAndInstallationFlow.md](SetupAndInstallationFlow.md) under "Install the engine toolchain".

@@ -195,6 +195,47 @@ of the two would go stale, and the stale one would be quoting prices.
 
 SKILL.md decides WHICH engine. This section only installs it, once per machine.
 
+### Roblox Studio Installation
+
+Roblox Studio is the required editor for the Roblox target. It runs on Windows and macOS; native
+Linux can prepare source and validate meshes but cannot replace the Studio build/import/playtest
+boundary. Under WSL, keep Roblox Studio on Windows and run command-line tooling in WSL only when
+localhost access between the two is working.
+
+Verify the command-line side first:
+
+```sh
+rojo --version
+python3 --version
+rokit --version
+```
+
+If Rojo or Rokit is missing, install the current release from its official project before
+continuing, then re-run the version checks. Do not guess a version from memory; the Roblox engine
+ships a `rokit.toml` template that pins the project toolchain once Rokit is available.
+
+Roblox Studio itself may require the user to complete the platform installer/sign-in once. After
+Studio is installed, enable its built-in MCP server from **Studio Assistant -> Manage MCP Servers ->
+Enable Studio as MCP server**. Prefer Studio's current quick-connect flow for the coding agent.
+When a stdio launcher is required, use the path documented by the installed Studio build. Common
+current launchers are:
+
+- Windows: `%LOCALAPPDATA%\Roblox\mcp.bat`
+- macOS: `/Applications/RobloxStudio.app/Contents/MacOS/StudioMCP`
+
+The setup is not complete merely because an MCP process starts. The agent must discover the live
+Roblox MCP tools and call `get_studio_state` (or the current equivalent) to confirm an actual Studio
+DataModel is attached. If more than one Studio is open, use `list_roblox_studios` and
+`set_active_studio` before proceeding.
+
+**Hard stop:** if no active Studio MCP connection can be verified, do not spend Thrixel Cubes and
+do not downgrade to a manual import/playtest workflow. Report the missing setup step and wait.
+The autonomous runtime/import rules are in [engines/roblox/MCP_AUTONOMY.md](engines/roblox/MCP_AUTONOMY.md).
+
+For Rojo live sync, `rojo sourcemap` is not enough. Run `rojo serve` and confirm the Studio Rojo
+plugin is connected before treating source as synchronized. Under WSL, Studio remains on Windows
+and connects to the Rojo server over localhost forwarding.
+
 ### Unity Installation
 
 #### Install Unity CLI to allow agents to control Unity
