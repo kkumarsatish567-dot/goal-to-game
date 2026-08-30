@@ -1,0 +1,29 @@
+{
+  "name": "BuildWorldRobloxStudioSync",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Shared": {
+        "$path": "src/shared"
+      }
+    },
+    "ServerScriptService": {
+      "Server": {
+        "$path": "src/server"
+      },
+      "Verification": {
+        "$path": "src/verification/server"
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "Client": {
+          "$path": "src/client"
+        },
+        "Verification": {
+          "$path": "src/verification/client"
+        }
+      }
+    }
+  }
+}
