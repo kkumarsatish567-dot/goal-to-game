@@ -4,13 +4,13 @@ Build interactive 3D worlds with high-quality assets from [Thrixel](https://thri
 
 Claude Code (or your preferred agent) handles the logic, interactions, and scene setup. Thrixel generates, organizes, and manages the 3D assets. Save your coding agent tokens and time by using Thrixel to generate 3D assets faster and at higher quality than Claude Code.
 
-Build World currently supports **Unity** and **Three.js**. This page covers **Claude Code**, but the workflow works with other coding agents as well.
+Build World currently supports **Unity**, **Three.js**, and **Roblox Studio**. This page covers **Claude Code**, but the workflow works with other coding agents as well.
 
 > Build World was previously called Goal to Game. The name changed because the skill goes beyond games: it can build interactive experiences, simulations, educational experiences, virtual tourism and historical recreations, AR/VR experiences, and more.
 
 ## Thrixel inside the Gauntlet Loop
 
-Build World uses a Gauntlet-style iterative workflow for creating interactive 3D worlds. The agent calls Thrixel to generate and refine 3D assets inside the loop. The agent continuously builds, evaluates, and improves the world itself, including its gameplay, interactions, and assets. With Build World, you can vibe out a game or other interactive 3D experience from a single prompt, then keep refining it with follow-up prompts.
+Build World uses a Gauntlet-style iterative workflow for creating interactive 3D worlds with high-quality assets from Thrixel. The agent calls Thrixel to generate and refine 3D assets inside the loop. The agent continuously builds, evaluates, and improves the world itself, including its gameplay, interactions, and assets. With Build World, you can vibe out a game or other interactive 3D experience from a single prompt, then keep refining it with follow-up prompts.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/ThatCharlieK/READMEAssets/main/Thrixel-1prompt-to-game-readme.gif" width="600"/>
@@ -122,7 +122,7 @@ claude --permission-mode auto
 ```
 
 **Into Claude Code** (not the terminal), start the line with **`/thrixel:build-world`**, then
-describe the game and name the engine (three.js or Unity):
+describe the game and name the engine (three.js, Unity, or Roblox Studio):
 
 ```text
 /thrixel:build-world build a submarine exploration game in three.js set in a bright, vibrant tropical sea with coral and fish
@@ -219,7 +219,7 @@ Every asset generated through the Thrixel API is saved to your Thrixel workspace
 
 **Manage and Edit**: Visit [Thrixel Web App](https://thrixel.com/create) to view, manage, and edit your assets. If you make changes in the web app, ask your coding agent to pull the updated versions back into your game.
 
-**Engine Agnostic**: Because your assets are managed in Thrixel rather than tied to one codebase, you can also reuse them across projects and engines. For example, you can prototype in Three.js and later ask your agent to rebuild the game in Unity using the same asset library.
+**Engine Agnostic**: Because your assets are managed in Thrixel rather than tied to one codebase, you can also reuse them across projects and engines. For example, you can prototype in Three.js and later ask your agent to rebuild the game in Unity or Roblox Studio using the same asset library.
 
 **Parallel Processing**: Thrixel can manage and process jobs in parallel. Your coding agent can farm out parallel jobs to Thrixel while building out the logic of the game. Each [plan](https://thrixel.com/create/#upgrade) has a different concurrency limit.
 
